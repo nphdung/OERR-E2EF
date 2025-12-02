@@ -1,0 +1,22 @@
+#!/usr/bin/csh
+set case_dir = "../cases/edge_fidelity"
+set join_dir = "../cases"
+cp -f $case_dir/Sample.txt .
+#foreach cases (ilp rra hba heu)
+foreach cases ( rra )
+	cp -f $case_dir/edge_fidelity_$cases.py $join_dir/test.py
+	set seed = 0
+	foreach fidelity (0.7 0.75 0.8 0.85 0.9)
+		if (-e $join_dir/result.txt) then
+			rm -f $join_dir/result.txt
+		endif
+		if (-e result.txt) then
+			rm -f result.txt
+		endif
+		foreach line ("`cat Sample.txt`")
+			$join_dir/test.py $line $fidelity $seed
+			@ seed = $seed + 1
+		end
+		mv -f result.txt $case_dir/result_{$cases}_$fidelity.txt
+	end
+end

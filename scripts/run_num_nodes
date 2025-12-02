@@ -1,0 +1,22 @@
+#!/usr/bin/csh
+set case_dir = "../cases/num_nodes"
+set join_dir = "../cases"
+foreach num_nodes (60 80 100 120 140 160)
+	cp -f $case_dir/Sample_$num_nodes.txt ./Sample.txt
+	foreach cases (ilp rra hba heu)
+	#foreach cases ( rra )
+		cp -f $case_dir/num_nodes_$cases.py $join_dir/test.py
+		if (-e $join_dir/result.txt) then
+			rm -f $join_dir/result.txt
+		endif
+		if (-e result.txt) then
+			rm -f result.txt
+		endif
+		set seed = 0
+		foreach line ("`cat Sample.txt`")
+			$join_dir/test.py $line $num_nodes $seed
+			@ seed++
+		end
+		mv -f result.txt $case_dir/result_{$cases}_{$num_nodes}.txt
+	end
+end

@@ -1,0 +1,14 @@
+#!/usr/bin/csh
+set case_dir = "../cases/num_nodes"
+set join_dir = "../cases"
+foreach cases (ilp rra hba heu)
+	if (-e agg.txt) then
+		rm -f agg.txt
+	endif
+	foreach num_nodes (60 80 100 120 140 160)
+		cp -f $case_dir/result_{$cases}_$num_nodes.txt ./{$cases}$num_nodes.txt
+		./agg.py $num_nodes $cases
+		rm -f {$cases}$num_nodes.txt
+	end
+	mv -f agg.txt $case_dir/agg_{$cases}.txt
+end

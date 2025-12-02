@@ -1,0 +1,20 @@
+#!/usr/bin/csh
+set case_dir = "../cases/capacity"
+set join_dir = "../cases"
+cp -f $case_dir/Sample.txt .
+#foreach cases (ilp rra hba heu)
+foreach cases ( rra )
+	cp -f $case_dir/capacity_$cases.py $join_dir/test.py
+	foreach capacity (3 4 5 6 7 8)
+		if (-e $join_dir/result.txt) then
+			rm -f $join_dir/result.txt
+		endif
+		if (-e result.txt) then
+			rm -f result.txt
+		endif
+		foreach line ("`cat Sample.txt`")
+			$join_dir/test.py $line $capacity
+		end
+		mv -f result.txt $case_dir/result_{$cases}_$capacity.txt
+	end
+end

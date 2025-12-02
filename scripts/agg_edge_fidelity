@@ -1,0 +1,15 @@
+#!/usr/bin/csh
+set case_dir = "../cases/edge_fidelity"
+set join_dir = "../cases"
+foreach cases (ilp rra hba heu)
+#foreach num_demands (10)
+	foreach num_demands (0.7 0.75 0.8 0.85 0.9)
+		cp -f $case_dir/result_{$cases}_$num_demands.txt ./{$cases}$num_demands.txt
+		if (-e agg_{$cases}.txt) then
+			rm -f agg.txt
+		endif
+		./agg.py $num_demands $cases
+		rm -f {$cases}$num_demands.txt
+	end
+	mv -f agg.txt $case_dir/agg_{$cases}.txt
+end

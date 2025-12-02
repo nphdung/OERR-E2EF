@@ -1,0 +1,18 @@
+#!/usr/bin/csh
+set case_dir = "../cases/num_nodes"
+set join_dir = "../cases"
+foreach cases (ilp rra hba heu)
+#foreach cases ( ilp )
+	if (-e time.txt) then
+		rm -f time.txt
+	endif
+	foreach num_nodes (60 80 100 120 140 160)
+	#foreach num_nodes ( 60 )
+		set file_time = "{$case_dir}/num_nodes_time/time_{$cases}_{$num_nodes}.txt"
+		echo $file_time
+		set avg_time = `python3 avg_agg.py ${file_time}`
+		echo "$num_nodes	$avg_time" >> time.txt
+	end
+	mv -f time.txt $case_dir/num_nodes_time/time_$cases.txt
+end
+#EOF

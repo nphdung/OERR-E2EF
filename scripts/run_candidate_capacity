@@ -1,0 +1,24 @@
+#!/usr/bin/csh
+# NEED TO PROVIDE AN ARGUMENT AS THE CAPACITY OF QUANTUM EDGES
+set case_dir = "../cases/candidate_capacity"
+set join_dir = "../cases"
+set cap = $argv
+cp -f $case_dir/Sample.txt .
+foreach cases (ilp rra hba heu)
+#foreach cases (rra)
+	cp -f $case_dir/candidate_$cases.py $join_dir/test.py
+	foreach candidate (3 4 5 6 7 8)
+	#foreach candidate (4 5 6)
+		if (-e $join_dir/result.txt) then
+			rm -f $join_dir/result.txt
+		endif
+		if (-e result.txt) then
+			rm -f result.txt
+		endif
+		foreach line ("`cat Sample.txt`")
+			#echo $line >> logfile.txt
+			$join_dir/test.py $line $cap $candidate
+		end
+		mv -f result.txt $case_dir/result_{$cases}_{$cap}_$candidate.txt
+	end
+end

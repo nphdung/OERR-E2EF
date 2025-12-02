@@ -1,0 +1,14 @@
+#!/usr/bin/csh
+set case_dir = "../cases/capacity"
+set join_dir = "../cases"
+foreach cases (ilp rra heu)
+	foreach capacity (3 4 5 6 7 8)
+		cp -f $case_dir/result_{$cases}_$capacity.txt ./{$cases}$capacity.txt
+		if (-e agg_{$cases}.txt) then
+			rm -f agg.txt
+		endif
+		./agg.py $capacity $cases
+		rm -f {$cases}$capacity.txt
+	end
+	mv -f agg.txt $case_dir/agg_{$cases}.txt
+end

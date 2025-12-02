@@ -1,0 +1,19 @@
+#!/usr/bin/csh
+set case_dir = "../cases/candidate_requests"
+set join_dir = "../cases"
+foreach num_demands (50 55 60 65 70)
+	cp -f $case_dir/Sample_$num_demands.txt ./Sample.txt
+	foreach cases (3 4 5 6)
+		cp -f $case_dir/candidate_requests_$cases.py $join_dir/test.py
+		if (-e $join_dir/result.txt) then
+			rm -f $join_dir/result.txt
+		endif
+		if (-e result.txt) then
+			rm -f result.txt
+		endif
+		foreach line ("`cat Sample.txt`")
+			$join_dir/test.py $line
+		end
+		mv -f result.txt $case_dir/result_{$cases}_{$num_demands}.txt
+	end
+end
